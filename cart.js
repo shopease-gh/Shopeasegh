@@ -1,4 +1,4 @@
-const cartItems = JSON.parse(localStorage.getItem("cart")) || [];
+let cartItems = JSON.parse(localStorage.getItem("cart")) || [];
 const cartList = document.getElementById("cart-items");
 const subtotalEl = document.getElementById("subtotal");
 const locationInput = document.getElementById("location");
@@ -16,19 +16,32 @@ function renderCart() {
 
   let subtotal = 0;
 
-  cartItems.forEach((item) => {
-    subtotal += item.price;
+  cartItems.forEach((item, index) => {
+    const quantity = item.quantity || 1;
+    const totalPrice = item.price * quantity;
+    subtotal += totalPrice;
 
     const div = document.createElement("div");
     div.classList.add("cart-item");
     div.innerHTML = `
       <h3>${item.name}</h3>
-      <p>₵${item.price}</p>
+      <p>₵${item.price} × ${quantity} = ₵${totalPrice}</p>
+      <button class="remove-btn" data-index="${index}">Remove</button>
     `;
     cartList.appendChild(div);
   });
 
   subtotalEl.textContent = subtotal;
+
+  // Attach remove buttons
+  document.querySelectorAll(".remove-btn").forEach(button => {
+    button.addEventListener("click", () => {
+      const index = parseInt(button.dataset.index);
+      cartItems.splice(index, 1);
+      localStorage.setItem("cart", JSON.stringify(cartItems));
+      renderCart(); // refresh cart
+    });
+  });
 }
 
 function showAlert(msg = "Order submitted!") {
@@ -70,29 +83,3 @@ submitBtn.addEventListener("click", () => {
 });
 
 renderCart();
-function renderCart() {
-  cartList.innerHTML = "";
-
-  if (cartItems.length === 0) {
-    cartList.innerHTML = "<p>Your cart is empty.</p>";
-    return;
-  }
-
-  let subtotal = 0;
-
-  cartItems.forEach((item) => {
-    const totalPrice = item.price * item.quantity;
-    subtotal += totalPrice;
-
-    const div = document.createElement("div");
-    div.classList.add("cart-item");
-    div.innerHTML = `
-      <h3>${item.name}</h3>
-      <p>₵${item.price} × ${item.quantity} = ₵${totalPrice}</p>
-    `;
-    cartList.appendChild(div);
-  });
-
-  subtotalEl.textContent = subtotal;
-}
-
