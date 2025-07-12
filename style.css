@@ -93,19 +93,14 @@ header {
   cursor: pointer;
 }
 
-.hero {
-  text-align: center;
-  padding: 40px 20px;
-  background: #1a1a1a;
-}
+
 
 .hero h2 {
   text-align: center;
 }
 
-.hero p {
-  font-size: 16px;
-}
+
+
 
 
 
