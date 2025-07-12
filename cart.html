@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Cart - ShopEase</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <header>
+    <h1>🛒 Your Cart</h1>
+  </header>
+
+  <main class="cart-container">
+    <div id="cart-items"></div>
+
+    <div class="cart-summary">
+      <h2>Subtotal: ₵<span id="subtotal">0</span></h2>
+
+      <label for="location">Delivery To:</label>
+      <input type="text" id="location" placeholder="Enter your town or address" required/>
+
+      <label for="payment">Payment Method:</label>
+      <select id="payment" required>
+        <option value="Cash">Cash on Delivery</option>
+        <option value="Mobile Money">Mobile Money</option>
+      </select>
+
+      <button id="submit-order">Submit Order</button>
+    </div>
+  </main>
+
+  <div id="alert" class="alert">Order submitted successfully!</div>
+
+  <script src="cart.js"></script>
+</body>
+</html>
