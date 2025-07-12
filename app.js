@@ -1,4 +1,4 @@
-// Sidebar toggle
+// === Sidebar Toggle ===
 const sidebar = document.getElementById('sidebar');
 const menuBtn = document.getElementById('menu-toggle');
 
@@ -12,32 +12,37 @@ document.addEventListener('click', (e) => {
   }
 });
 
-// Theme toggle
+// === Theme Toggle ===
 document.getElementById('theme-toggle').addEventListener('click', () => {
   document.body.classList.toggle('dark-theme');
 });
 
-// Product loader
+// === Product Variables ===
 let products = [];
 const productList = document.getElementById('product-list');
 const searchInput = document.getElementById('search-input');
 const priceRange = document.getElementById('priceRange');
 const priceValue = document.getElementById('priceValue');
 
-// Load products
+// === Load Product Data ===
 fetch('products.json')
   .then(res => res.json())
   .then(data => {
     products = data;
     displayProducts(products);
+  })
+  .catch(err => {
+    console.error('Error loading products:', err);
   });
 
-// Show products
+// === Render Products ===
 function displayProducts(data) {
   productList.innerHTML = '';
+
   data.forEach(product => {
     const card = document.createElement('div');
     card.classList.add('product-card');
+
     card.innerHTML = `
       <img src="${product.image}" alt="${product.name}" />
       <h4>${product.name}</h4>
@@ -47,13 +52,14 @@ function displayProducts(data) {
         <button class="wishlist-btn" data-id="${product.id}">Wishlist ❤️</button>
       </div>
     `;
+
     productList.appendChild(card);
   });
 
-  attachActionListeners();
+  attachActionListeners(); // important: reattach events after rendering
 }
 
-// Filters
+// === Filters ===
 searchInput.addEventListener('input', applyFilters);
 priceRange.addEventListener('input', () => {
   priceValue.textContent = priceRange.value;
@@ -72,35 +78,42 @@ function applyFilters() {
   displayProducts(filtered);
 }
 
-// LocalStorage Helpers
+// === Local Storage Helpers ===
 function getStorage(key) {
   return JSON.parse(localStorage.getItem(key)) || [];
 }
 
-function saveToStorage(key, item) {
+function saveToStorage(key, product) {
   const current = getStorage(key);
-  current.push(item);
-  localStorage.setItem(key, JSON.stringify(current));
+  const exists = current.some(item => item.id === product.id);
+
+  if (!exists) {
+    current.push(product);
+    localStorage.setItem(key, JSON.stringify(current));
+    showAlert(`Added to ${key === 'cart' ? 'Cart' : 'Wishlist'} ✅`);
+  } else {
+    showAlert(`Already in ${key === 'cart' ? 'Cart' : 'Wishlist'} ⚠️`);
+  }
 }
 
-// Alert
+// === Alert Popup ===
 function showAlert(msg = 'Item added!') {
   const alertBox = document.getElementById('alert');
   alertBox.textContent = msg;
   alertBox.classList.add('show');
+
   setTimeout(() => {
     alertBox.classList.remove('show');
   }, 2000);
 }
 
-// Add to Cart / Wishlist logic
+// === Button Listeners ===
 function attachActionListeners() {
   document.querySelectorAll('.cart-btn').forEach(btn => {
     btn.addEventListener('click', () => {
       const id = parseInt(btn.dataset.id);
       const product = products.find(p => p.id === id);
-      saveToStorage('cart', product);
-      showAlert('Added to Cart 🛒');
+      if (product) saveToStorage('cart', product);
     });
   });
 
@@ -108,8 +121,7 @@ function attachActionListeners() {
     btn.addEventListener('click', () => {
       const id = parseInt(btn.dataset.id);
       const product = products.find(p => p.id === id);
-      saveToStorage('wishlist', product);
-      showAlert('Added to Wishlist ❤️');
+      if (product) saveToStorage('wishlist', product);
     });
   });
 }
