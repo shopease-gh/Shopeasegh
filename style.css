@@ -162,3 +162,20 @@ body {
   padding: 20px;
   margin-top: 40px;
 }
+.filters {
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+#search-input {
+  padding: 10px;
+  border-radius: 8px;
+  border: none;
+  width: 100%;
+}
+
+#priceRange {
+  width: 100%;
+}
