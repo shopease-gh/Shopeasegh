@@ -34,20 +34,13 @@ fetch('products.json')
     displayProducts(products);
   });
 
-function displayProducts(data) {
-  productList.innerHTML = '';
-  data.forEach(product => {
-    const card = document.createElement('div');
-    card.classList.add('product-card');
-    card.innerHTML = `
-      <img src="${product.image}" alt="${product.name}" />
-      <h4>${product.name}</h4>
-      <p>₵${product.price}</p>
-      <button>Add to Cart</button>
-    `;
-    productList.appendChild(card);
-  });
-}
+card.innerHTML = `
+  <img src="${product.image}" alt="${product.name}" />
+  <h4>${product.name}</h4>
+  <p>₵${product.price}</p>
+  <button>Add to Cart</button>
+`;
+
 
 // Filters
 searchInput.addEventListener('input', applyFilters);
