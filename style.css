@@ -16,7 +16,7 @@ body {
   width: 250px;
   background: #111;
   height: 100vh;
-  position: fixed;
+  position: fixed when clicked, hidden when clicked again;
   left: -100%;
   top: 0;
   transition: 0.3s;
