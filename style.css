@@ -269,7 +269,7 @@ body {
   width: 200px;
   position: fixed;
   top: 60px;
-  left: 0;
+  left: 0; /* hide sidebar by default */
   height: 100%;
   z-index: 100;
   display: flex;
