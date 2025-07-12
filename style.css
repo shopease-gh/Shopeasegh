@@ -179,3 +179,40 @@ body {
 #priceRange {
   width: 100%;
 }
+.product-actions {
+  display: flex;
+  justify-content: space-between;
+  gap: 5px;
+}
+
+.product-actions button {
+  flex: 1;
+  padding: 6px 10px;
+  border: none;
+  border-radius: 5px;
+  background: #d4af37;
+  color: black;
+  cursor: pointer;
+  font-size: 14px;
+}
+
+/* Alert style */
+.alert {
+  position: fixed;
+  bottom: 20px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: #d4af37;
+  color: black;
+  padding: 10px 20px;
+  border-radius: 8px;
+  font-weight: bold;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.4s ease;
+  z-index: 999;
+}
+
+.alert.show {
+  opacity: 1;
+}
