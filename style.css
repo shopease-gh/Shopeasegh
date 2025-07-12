@@ -253,3 +253,12 @@ body {
   border-radius: 8px;
   cursor: pointer;
 }
+.remove-btn {
+  background: crimson;
+  color: white;
+  border: none;
+  padding: 6px 10px;
+  border-radius: 6px;
+  margin-top: 5px;
+  cursor: pointer;
+}
