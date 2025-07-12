@@ -11,20 +11,21 @@ body {
   color: #d4af37;
 }
 
-/* Sidebar */
 .sidebar {
-  background-color: #000; /* black sidebar */
+  background-color: #000;
   color: gold;
   padding: 20px;
   width: 200px;
   position: fixed;
   top: 60px;
-  left: -250px; /* Hidden by default */
-  height: 100%;
+  left: 0;
+  height: calc(100vh - 60px); /* Adjust for header height */
   z-index: 1000;
   display: flex;
   flex-direction: column;
-  transition: left 0.3s ease;
+  border-right: 1px solid gold;
+}
+transition: left 0.3s ease;
 }
 
 .sidebar.show {
