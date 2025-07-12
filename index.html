@@ -7,6 +7,7 @@
   <link rel="stylesheet" href="style.css" />
 </head>
 <body>
+
   <!-- Header -->
   <header>
     <div class="header-top">
@@ -16,27 +17,16 @@
     </div>
   </header>
 
+  <!-- Sidebar -->
   <aside id="sidebar" class="sidebar">
-  <ul>
-    <li><a href="index.html">🏠 Home</a></li>
-
-    
-    <li><a href="cart.html">🛒 Cart</a></li>
-
-    
-    <li><a href="wishlist.html">❤️ Wishlist</a></li>
-
-    
-    <li><a href="login.html">🔐 Login</a></li>
-
-    
-    <li><a href="inbox.html">📬 Inbox</a></li>
-
-    
-  </ul>
-</aside>
-<div id="sidebar-backdrop" class="sidebar-backdrop"></div>
-
+    <ul>
+      <li><a href="index.html">🏠 Home</a></li>
+      <li><a href="cart.html">🛒 Cart</a></li>
+      <li><a href="wishlist.html">❤️ Wishlist</a></li>
+      <li><a href="login.html">🔐 Login</a></li>
+      <li><a href="inbox.html">📬 Inbox</a></li>
+    </ul>
+  </aside>
 
   <!-- Main Content -->
   <main class="main-content">
@@ -68,78 +58,39 @@
     <p>&copy; 2025 ShopEase. Beauty. Tech. You.</p>
   </footer>
 
-  <!-- Script -->
+  <!-- Scripts -->
   <script src="app.js" defer></script>
   <script>
-  document.addEventListener("DOMContentLoaded", () => {
-    const sidebar = document.getElementById("sidebar");
-    const toggleBtn = document.getElementById("menu-toggle");
+    document.addEventListener("DOMContentLoaded", () => {
+      const sidebar = document.getElementById("sidebar");
+      const toggleBtn = document.getElementById("menu-toggle");
 
-    if (sidebar && toggleBtn) {
-      toggleBtn.addEventListener("click", () => {
-        sidebar.classList.toggle("show");
-      });
-      <script>
-  // Close sidebar on link click
-  document.querySelectorAll("#sidebar a").forEach(link => {
-    link.addEventListener("click", () => {
-      document.getElementById("sidebar").classList.remove("show");
-    });
-  });
-
-  // Close sidebar on outside click
-  document.addEventListener("click", (e) => {
-    const sidebar = document.getElementById("sidebar");
-    const toggleBtn = document.getElementById("menu-toggle");
-    if (
-      sidebar.classList.contains("show") &&
-      !sidebar.contains(e.target) &&
-      e.target !== toggleBtn
-    ) {
-      sidebar.classList.remove("show");
-    }
-  });
-</script>
-
-    }
-  });
-</script>
-  <script>
-  document.addEventListener("DOMContentLoaded", () => {
-    const sidebar = document.getElementById("sidebar");
-    const toggleBtn = document.getElementById("menu-toggle");
-
-    if (sidebar && toggleBtn) {
-      toggleBtn.addEventListener("click", () => {
-        sidebar.classList.toggle("show");
-      });
-
-      // Close sidebar when clicking a link inside it
-      document.querySelectorAll("#sidebar a").forEach(link => {
-        link.addEventListener("click", () => {
-          sidebar.classList.remove("show");
+      if (sidebar && toggleBtn) {
+        // Toggle sidebar
+        toggleBtn.addEventListener("click", () => {
+          sidebar.classList.toggle("show");
         });
-      });
 
-      // Close sidebar when clicking outside of it
-      document.addEventListener("click", (event) => {
-        if (
-          sidebar.classList.contains("show") &&
-          !sidebar.contains(event.target) &&
-          event.target !== toggleBtn
-        ) {
-          sidebar.classList.remove("show");
-        }
-      });
-    }
-  });
-</script>
+        // Close sidebar when clicking a link
+        document.querySelectorAll("#sidebar a").forEach(link => {
+          link.addEventListener("click", () => {
+            sidebar.classList.remove("show");
+          });
+        });
 
-
-
-</script>
-  
-
+        // Close sidebar when clicking outside
+        document.addEventListener("click", (event) => {
+          if (
+            sidebar.classList.contains("show") &&
+            !sidebar.contains(event.target) &&
+            event.target !== toggleBtn
+          ) {
+            sidebar.classList.remove("show");
+          }
+        });
+      }
+    });
+  </script>
 
 </body>
 </html>
