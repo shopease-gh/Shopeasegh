@@ -1,0 +1,58 @@
+[
+  {
+    "id": 1,
+    "name": "Wireless Earbuds",
+    "price": 250,
+    "category": "Electronics",
+    "image": "https://via.placeholder.com/150?text=Earbuds"
+  },
+  {
+    "id": 2,
+    "name": "Gold Hoop Earrings",
+    "price": 150,
+    "category": "Accessories",
+    "image": "https://via.placeholder.com/150?text=Earrings"
+  },
+  {
+    "id": 3,
+    "name": "Facial Cleanser",
+    "price": 90,
+    "category": "Facial Stuff",
+    "image": "https://via.placeholder.com/150?text=Cleanser"
+  },
+  {
+    "id": 4,
+    "name": "Men's Shirt",
+    "price": 200,
+    "category": "Clothes",
+    "image": "https://via.placeholder.com/150?text=Shirt"
+  },
+  {
+    "id": 5,
+    "name": "Wig Cap",
+    "price": 60,
+    "category": "Hair Accessories",
+    "image": "https://via.placeholder.com/150?text=Wig+Cap"
+  },
+  {
+    "id": 6,
+    "name": "Smartphone",
+    "price": 980,
+    "category": "Electronics",
+    "image": "https://via.placeholder.com/150?text=Phone"
+  },
+  {
+    "id": 7,
+    "name": "Hair Oil",
+    "price": 110,
+    "category": "Hair Products",
+    "image": "https://via.placeholder.com/150?text=Hair+Oil"
+  },
+  {
+    "id": 8,
+    "name": "Face Mask",
+    "price": 45,
+    "category": "Facial Stuff",
+    "image": "https://via.placeholder.com/150?text=Face+Mask"
+  }
+]
