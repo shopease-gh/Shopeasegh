@@ -216,3 +216,40 @@ body {
 .alert.show {
   opacity: 1;
 }
+.cart-container {
+  padding: 20px;
+}
+
+.cart-item {
+  border: 1px solid #d4af37;
+  padding: 10px;
+  margin-bottom: 10px;
+  border-radius: 8px;
+}
+
+.cart-summary {
+  margin-top: 20px;
+  padding: 20px;
+  background-color: var(--accent);
+  color: black;
+  border-radius: 10px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.cart-summary input,
+.cart-summary select {
+  padding: 8px;
+  border-radius: 6px;
+  border: none;
+}
+
+.cart-summary button {
+  background-color: black;
+  color: gold;
+  padding: 10px;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+}
