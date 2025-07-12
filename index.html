@@ -104,6 +104,35 @@
     }
   });
 </script>
+  <script>
+  document.addEventListener("DOMContentLoaded", () => {
+    const sidebar = document.getElementById("sidebar");
+    const toggleBtn = document.getElementById("menu-toggle");
+    const backdrop = document.getElementById("sidebar-backdrop");
+
+    if (sidebar && toggleBtn) {
+      toggleBtn.addEventListener("click", () => {
+        sidebar.classList.toggle("show");
+        backdrop.style.display = sidebar.classList.contains("show") ? "block" : "none";
+      });
+    }
+
+    // Close when clicking on backdrop
+    backdrop.addEventListener("click", () => {
+      sidebar.classList.remove("show");
+      backdrop.style.display = "none";
+    });
+
+    // Close when clicking a link inside sidebar
+    document.querySelectorAll("#sidebar a").forEach(link => {
+      link.addEventListener("click", () => {
+        sidebar.classList.remove("show");
+        backdrop.style.display = "none";
+      });
+    });
+  });
+</script>
+
 
 </body>
 </html>
