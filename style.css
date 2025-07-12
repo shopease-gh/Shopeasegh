@@ -10,6 +10,11 @@ body {
   background-color: #000;
   color: #d4af37;
 }
+.main-content {
+  margin-left: 200px; /* same as sidebar width */
+  padding: 20px;
+}
+
 
 .sidebar {
   background-color: #000;
@@ -25,12 +30,11 @@ body {
   flex-direction: column;
   border-right: 1px solid gold;
 }
-transition: left 0.3s ease;
+.sidebar {
+  left: 0; /* Always visible */
+  transition: none;
 }
 
-.sidebar.show {
-  left: 0;
-}
 
 .sidebar ul {
   list-style: none;
