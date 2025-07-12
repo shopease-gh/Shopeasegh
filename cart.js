@@ -70,3 +70,29 @@ submitBtn.addEventListener("click", () => {
 });
 
 renderCart();
+function renderCart() {
+  cartList.innerHTML = "";
+
+  if (cartItems.length === 0) {
+    cartList.innerHTML = "<p>Your cart is empty.</p>";
+    return;
+  }
+
+  let subtotal = 0;
+
+  cartItems.forEach((item) => {
+    const totalPrice = item.price * item.quantity;
+    subtotal += totalPrice;
+
+    const div = document.createElement("div");
+    div.classList.add("cart-item");
+    div.innerHTML = `
+      <h3>${item.name}</h3>
+      <p>₵${item.price} × ${item.quantity} = ₵${totalPrice}</p>
+    `;
+    cartList.appendChild(div);
+  });
+
+  subtotalEl.textContent = subtotal;
+}
+
