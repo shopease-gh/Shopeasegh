@@ -108,30 +108,37 @@
   document.addEventListener("DOMContentLoaded", () => {
     const sidebar = document.getElementById("sidebar");
     const toggleBtn = document.getElementById("menu-toggle");
-    const backdrop = document.getElementById("sidebar-backdrop");
 
     if (sidebar && toggleBtn) {
       toggleBtn.addEventListener("click", () => {
         sidebar.classList.toggle("show");
-        backdrop.style.display = sidebar.classList.contains("show") ? "block" : "none";
+      });
+
+      // Close sidebar when clicking a link inside it
+      document.querySelectorAll("#sidebar a").forEach(link => {
+        link.addEventListener("click", () => {
+          sidebar.classList.remove("show");
+        });
+      });
+
+      // Close sidebar when clicking outside of it
+      document.addEventListener("click", (event) => {
+        if (
+          sidebar.classList.contains("show") &&
+          !sidebar.contains(event.target) &&
+          event.target !== toggleBtn
+        ) {
+          sidebar.classList.remove("show");
+        }
       });
     }
-
-    // Close when clicking on backdrop
-    backdrop.addEventListener("click", () => {
-      sidebar.classList.remove("show");
-      backdrop.style.display = "none";
-    });
-
-    // Close when clicking a link inside sidebar
-    document.querySelectorAll("#sidebar a").forEach(link => {
-      link.addEventListener("click", () => {
-        sidebar.classList.remove("show");
-        backdrop.style.display = "none";
-      });
-    });
   });
 </script>
+
+
+
+</script>
+  
 
 
 </body>
