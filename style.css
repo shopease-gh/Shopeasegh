@@ -11,22 +11,19 @@ body {
   color: #d4af37;
 }
 
-/* Sidebar */
-.sidebar {
-  background-color: #000;
-  color: gold;
-  padding: 20px;
-  width: 200px;
-  position: fixed;
-  top: 60px;
-  left: 0;
-  height: calc(100vh - 60px);
-  z-index: 1000;
+header {
+  background: #111;
+  color: #d4af37;
+  padding: 15px 20px;
   display: flex;
-  flex-direction: column;
-  border-right: 1px solid gold;
-  transition: left 0.3s ease;
+  align-items: center;
+  justify-content: space-between;
+  position: sticky;
+  top: 0;
+  z-index: 1100;
+  margin-left: 200px; /* This is the key line */
 }
+
 
 .sidebar ul {
   list-style: none;
