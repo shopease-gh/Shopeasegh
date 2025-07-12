@@ -54,6 +54,20 @@
       <button>Accessories</button>
     </div>
   </section>
+<!-- Filters and Search -->
+<section class="filters">
+  <input type="text" id="search-input" placeholder="Search products..." />
+  <label for="priceRange">Max Price: ₵<span id="priceValue">1000</span></label>
+  <input type="range" id="priceRange" min="0" max="1000" value="1000" />
+</section>
+
+<!-- Dynamic Product Container -->
+<section class="products">
+  <h3>Featured Products</h3>
+  <div class="product-grid" id="product-list">
+    <!-- JS will inject product cards here -->
+  </div>
+</section>
 
   <!-- Products -->
   <section class="products">
