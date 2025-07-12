@@ -38,8 +38,12 @@ card.innerHTML = `
   <img src="${product.image}" alt="${product.name}" />
   <h4>${product.name}</h4>
   <p>₵${product.price}</p>
-  <button>Add to Cart</button>
+  <div class="product-actions">
+    <button class="cart-btn" data-id="${product.id}">Add to Cart 🛒</button>
+    <button class="wishlist-btn" data-id="${product.id}">Wishlist ❤️</button>
+  </div>
 `;
+
 
 
 // Filters
