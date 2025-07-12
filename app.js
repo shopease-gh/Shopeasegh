@@ -85,16 +85,33 @@ function getStorage(key) {
 
 function saveToStorage(key, product) {
   const current = getStorage(key);
-  const exists = current.some(item => item.id === product.id);
 
-  if (!exists) {
-    current.push(product);
+  if (key === "cart") {
+    const index = current.findIndex(item => item.id === product.id);
+
+    if (index > -1) {
+      current[index].quantity += 1;
+    } else {
+      product.quantity = 1;
+      current.push(product);
+    }
+
     localStorage.setItem(key, JSON.stringify(current));
-    showAlert(`Added to ${key === 'cart' ? 'Cart' : 'Wishlist'} ✅`);
-  } else {
-    showAlert(`Already in ${key === 'cart' ? 'Cart' : 'Wishlist'} ⚠️`);
+    showAlert("Added to Cart 🛒");
+
+  } else if (key === "wishlist") {
+    const exists = current.some(item => item.id === product.id);
+
+    if (!exists) {
+      current.push(product);
+      localStorage.setItem(key, JSON.stringify(current));
+      showAlert("Added to Wishlist ❤️");
+    } else {
+      showAlert("Already in Wishlist ⚠️");
+    }
   }
 }
+
 
 // === Alert Popup ===
 function showAlert(msg = 'Item added!') {
