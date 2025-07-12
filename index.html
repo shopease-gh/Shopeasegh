@@ -78,6 +78,28 @@
       toggleBtn.addEventListener("click", () => {
         sidebar.classList.toggle("show");
       });
+      <script>
+  // Close sidebar on link click
+  document.querySelectorAll("#sidebar a").forEach(link => {
+    link.addEventListener("click", () => {
+      document.getElementById("sidebar").classList.remove("show");
+    });
+  });
+
+  // Close sidebar on outside click
+  document.addEventListener("click", (e) => {
+    const sidebar = document.getElementById("sidebar");
+    const toggleBtn = document.getElementById("menu-toggle");
+    if (
+      sidebar.classList.contains("show") &&
+      !sidebar.contains(e.target) &&
+      e.target !== toggleBtn
+    ) {
+      sidebar.classList.remove("show");
+    }
+  });
+</script>
+
     }
   });
 </script>
