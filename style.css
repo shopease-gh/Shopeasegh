@@ -93,21 +93,17 @@ header {
   cursor: pointer;
 }
 
-/* Hero */
 .hero {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
   text-align: center;
-  padding: 40px 20px;
+  height: 300px; /* adjust as needed */
   background: #1a1a1a;
+  padding: 40px 20px;
 }
 
-.hero h2 {
-  font-size: 28px;
-  margin-bottom: 10px;
-}
-
-.hero p {
-  font-size: 16px;
-}
 
 /* Filters */
 .filters {
