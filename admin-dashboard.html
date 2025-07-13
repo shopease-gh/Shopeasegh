@@ -99,10 +99,16 @@
 
     </div>
 
-    <div id="promotions" class="tab-content section-box">
-      <h3>Promotion Status</h3>
-      <p>Manage discounted products and view live promos.</p>
-    </div>
+    <h3>Promotion Status</h3>
+
+<div style="margin-bottom: 15px;">
+  <input type="text" id="promoName" placeholder="Product Name" style="padding: 8px; width: 200px; margin-right: 10px;" />
+  <input type="number" id="promoDiscount" placeholder="Discount %" style="padding: 8px; width: 120px; margin-right: 10px;" />
+  <button onclick="addPromotion()">➕ Add Promotion</button>
+</div>
+
+<div id="promoList"></div>
+
 
     <div id="products" class="tab-content section-box">
       <h3>Add/Remove Products</h3>
@@ -132,9 +138,10 @@
   });
   document.getElementById(tabId).classList.add('active');
 
-  if (tabId === 'orders-processed') {
-    loadProcessedOrders();
-  }
+  if (tabId === 'orders-processed') loadProcessedOrders();
+  if (tabId === 'promotions') loadPromotions();
+}
+
 }
 
 
@@ -170,6 +177,53 @@
     container.innerHTML = "<p>No processed orders yet.</p>";
     return;
   }
+        let promotions = JSON.parse(localStorage.getItem("promotions") || "[]");
+
+function savePromotions() {
+  localStorage.setItem("promotions", JSON.stringify(promotions));
+  loadPromotions();
+}
+
+function addPromotion() {
+  const name = document.getElementById("promoName").value.trim();
+  const discount = parseInt(document.getElementById("promoDiscount").value);
+
+  if (!name || isNaN(discount)) {
+    alert("Enter product name and discount percentage.");
+    return;
+  }
+
+  promotions.push({ name, discount });
+  document.getElementById("promoName").value = "";
+  document.getElementById("promoDiscount").value = "";
+  savePromotions();
+}
+
+function removePromotion(index) {
+  if (confirm("Remove this promotion?")) {
+    promotions.splice(index, 1);
+    savePromotions();
+  }
+}
+
+function loadPromotions() {
+  const container = document.getElementById("promoList");
+  if (!container) return;
+
+  if (promotions.length === 0) {
+    container.innerHTML = "<p>No promotions yet.</p>";
+    return;
+  }
+
+  container.innerHTML = promotions.map((promo, index) => `
+    <div style="border:1px solid gold; padding:10px; border-radius:8px; margin-bottom:10px;">
+      <strong>Product:</strong> ${promo.name}<br/>
+      <strong>Discount:</strong> ${promo.discount}%<br/>
+      <button onclick="removePromotion(${index})" style="background:crimson; color:white; margin-top:10px;">🗑️ Remove</button>
+    </div>
+  `).join("");
+}
+
 
   container.innerHTML = processed.map((order, index) => `
     <div style="border:1px solid gold; padding:10px; border-radius:8px; margin-bottom:10px;">
