@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Sign Up | ShopEase</title>
+  <style>
+    body {
+      background: black;
+      color: gold;
+      font-family: 'Segoe UI', sans-serif;
+      margin: 0;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+    }
+
+    .signup-container {
+      background: #1a1a1a;
+      padding: 30px;
+      border-radius: 10px;
+      width: 100%;
+      max-width: 400px;
+      box-shadow: 0 0 10px gold;
+    }
+
+    h2 {
+      text-align: center;
+      margin-bottom: 20px;
+    }
+
+    input {
+      width: 100%;
+      padding: 10px;
+      margin-bottom: 15px;
+      border: none;
+      border-radius: 5px;
+    }
+
+    button {
+      width: 100%;
+      background: gold;
+      color: black;
+      border: none;
+      padding: 12px;
+      border-radius: 6px;
+      cursor: pointer;
+      font-weight: bold;
+    }
+
+    .login-link {
+      margin-top: 15px;
+      text-align: center;
+      font-size: 14px;
+    }
+
+    .login-link a {
+      color: gold;
+      text-decoration: underline;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="signup-container">
+    <h2>Create Your Account</h2>
+    <input type="text" id="name" placeholder="Full Name" required />
+    <input type="tel" id="phone" placeholder="Phone Number" required />
+    <input type="email" id="email" placeholder="Email Address" required />
+    <input type="password" id="password" placeholder="Password" required />
+    <button onclick="signup()">Sign Up</button>
+
+    <div class="login-link">
+      Already have an account? <a href="login.html">Login</a>
+    </div>
+  </div>
+
+  <script>
+    function signup() {
+      const name = document.getElementById("name").value.trim();
+      const phone = document.getElementById("phone").value.trim();
+      const email = document.getElementById("email").value.trim();
+      const password = document.getElementById("password").value;
+
+      if (!name || !phone || !email || !password) {
+        alert("Please fill in all fields.");
+        return;
+      }
+
+      const user = { name, phone, email, password };
+      localStorage.setItem("shopeaseUser", JSON.stringify(user));
+      alert("Signup successful!");
+      window.location.href = "login.html";
+    }
+  </script>
+
+</body>
+</html>
