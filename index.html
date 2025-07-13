@@ -108,6 +108,18 @@
       }
     });
   </script>
+<script>
+  // Reveal Admin link with Shift + A
+  document.addEventListener('keydown', (e) => {
+    if (e.shiftKey && e.key.toLowerCase() === 'a') {
+      const adminLink = document.getElementById('admin-link');
+      if (adminLink) {
+        adminLink.style.display = 'block';
+        alert("🔐 Admin access link revealed.");
+      }
+    }
+  });
+</script>
 
 </body>
 </html>
