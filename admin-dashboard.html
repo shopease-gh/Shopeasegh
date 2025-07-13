@@ -137,10 +137,11 @@
 <div id="categoryList" style="margin-top:20px;"></div>
 
 
-    <div id="inbox" class="tab-content section-box">
-      <h3>Inbox</h3>
-      <p>Read and respond to messages from customers.</p>
-    </div>
+   <div id="inbox" class="tab-content section-box">
+  <h3>Inbox</h3>
+  <div id="messageList"></div>
+</div>
+
   </div>
 
   <script>
@@ -149,16 +150,17 @@
       window.location.href = 'admin-login.html';
     }
 
-    function showTab(tabId) {
+function showTab(tabId) {
   document.querySelectorAll('.tab-content').forEach(tab => {
     tab.classList.remove('active');
   });
   document.getElementById(tabId).classList.add('active');
 
-  if (tabId === 'orders-processed') loadProcessedOrders();
-  if (tabId === 'promotions') loadPromotions();
+  if (tabId === 'orders-received') loadOrders();
   if (tabId === 'products') loadProducts();
   if (tabId === 'categories') loadCategories();
+  if (tabId === 'inbox') loadInbox();
+}
 
 
 }
@@ -390,6 +392,61 @@ function loadCategories() {
     </div>
   `).join("");
 }
+      let inboxMessages = JSON.parse(localStorage.getItem("inboxMessages") || "[]");
+
+function saveInbox() {
+  localStorage.setItem("inboxMessages", JSON.stringify(inboxMessages));
+  loadInbox();
+}
+
+function sendReply(index) {
+  const replyInput = document.getElementById(`reply-${index}`);
+  const replyText = replyInput.value.trim();
+
+  if (!replyText) {
+    alert("Reply cannot be empty.");
+    return;
+  }
+
+  inboxMessages[index].reply = replyText;
+  saveInbox();
+}
+
+function deleteMessage(index) {
+  if (confirm("Delete this message?")) {
+    inboxMessages.splice(index, 1);
+    saveInbox();
+  }
+}
+
+function loadInbox() {
+  const container = document.getElementById("messageList");
+  if (!container) return;
+
+  if (inboxMessages.length === 0) {
+    container.innerHTML = "<p>No messages yet.</p>";
+    return;
+  }
+
+  container.innerHTML = inboxMessages.map((msg, index) => `
+    <div style="border:1px solid gold; border-radius:8px; padding:10px; margin-bottom:15px;">
+      <strong>Name:</strong> ${msg.name}<br/>
+      <strong>Email:</strong> ${msg.email}<br/>
+      <strong>Message:</strong><br/>
+      <p style="margin: 8px 0; color: #ccc;">${msg.message}</p>
+
+      <div>
+        <label for="reply-${index}"><strong>Reply:</strong></label><br/>
+        <textarea id="reply-${index}" rows="3" style="width:100%; margin-top:5px;" placeholder="Type your reply here...">${msg.reply || ""}</textarea>
+        <div style="margin-top:8px;">
+          <button onclick="sendReply(${index})" style="padding:6px 12px; background:gold; color:black;">📨 Send Reply</button>
+          <button onclick="deleteMessage(${index})" style="padding:6px 12px; background:crimson; color:white; margin-left:10px;">🗑️ Delete</button>
+        </div>
+      </div>
+    </div>
+  `).join("");
+}
+
 
     }
 
