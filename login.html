@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Login | ShopEase</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+
+  <!-- Sidebar -->
+  <div class="sidebar" id="sidebar">
+    <div class="sidebar-header">
+      <img src="logo.png" alt="ShopEase Logo" class="logo" />
+      <h2>ShopEase</h2>
+    </div>
+    <ul class="sidebar-links">
+      <li><a href="profile.html">👤 Profile</a></li>
+      <li><a href="index.html">🏠 Home</a></li>
+      <li><a href="login.html">🔐 Login</a></li>
+      <li><a href="inbox.html">📬 Inbox</a></li>
+      <li><a href="wishlist.html">💖 Wishlist</a></li>
+      <li><a href="cart.html">🛒 Cart</a></li>
+    </ul>
+  </div>
+  <div class="sidebar-backdrop" onclick="toggleSidebar()"></div>
+
+  <!-- Topbar -->
+  <div class="topbar">
+    <button class="menu-btn" onclick="toggleSidebar()">☰</button>
+    <div class="top-icons">
+      <a href="cart.html">🛒</a>
+      <a href="wishlist.html">💖</a>
+      <a href="profile.html">👤</a>
+    </div>
+  </div>
+
+  <!-- Login Form -->
+  <section class="hero">
+    <h2>🔐 Login</h2>
+    <p>Access your ShopEase account below.</p>
+  </section>
+
+  <section class="cart-container">
+    <form id="loginForm" style="background: #1a1a1a; padding: 20px; border-radius: 8px;">
+      <div style="margin-bottom: 15px;">
+        <label>Email</label><br/>
+        <input type="email" id="email" required style="width: 100%; padding: 10px; border-radius: 6px; border: none;" />
+      </div>
+      <div style="margin-bottom: 15px;">
+        <label>Password</label><br/>
+        <input type="password" id="password" required style="width: 100%; padding: 10px; border-radius: 6px; border: none;" />
+      </div>
+      <button type="submit" style="padding: 10px 16px; background: gold; color: black; border: none; border-radius: 6px; cursor: pointer;">Login</button>
+    </form>
+    <p style="margin-top: 10px;">Don't have an account? <a href="#" style="color: gold;">Sign up</a></p>
+  </section>
+
+  <footer class="footer">
+    <p>&copy; 2025 ShopEase. Beauty. Tech. You.</p>
+  </footer>
+
+  <script>
+    function toggleSidebar() {
+      document.getElementById('sidebar').classList.toggle('show');
+      document.querySelector('.sidebar-backdrop').classList.toggle('show');
+    }
+
+    // Handle login (placeholder logic)
+    document.getElementById('loginForm').addEventListener('submit', function (e) {
+      e.preventDefault();
+      const email = document.getElementById('email').value.trim();
+      const password = document.getElementById('password').value.trim();
+
+      if (email && password) {
+        localStorage.setItem('shopeaseUser', JSON.stringify({ email }));
+        alert('Login successful!');
+        window.location.href = 'index.html';
+      } else {
+        alert('Please enter your email and password.');
+      }
+    });
+  </script>
+
+</body>
+</html>
