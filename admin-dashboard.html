@@ -90,7 +90,10 @@
 
     <div id="orders-received" class="tab-content active section-box">
       <h3>Orders Received</h3>
-      <p>This is where admin will see new orders submitted by users.</p>
+     <div id="ordersList">
+  <!-- Orders will load here -->
+</div>
+
     </div>
 
     <div id="orders-processed" class="tab-content section-box">
@@ -138,6 +141,62 @@
       window.location.href = 'entry.html';
     }
   </script>
+// Dummy order sample — later to be populated from localStorage or backend
+let orders = JSON.parse(localStorage.getItem("orders") || "[]");
+
+// Save and reload orders
+function saveOrders() {
+  localStorage.setItem("orders", JSON.stringify(orders));
+  loadOrders();
+}
+
+// Render orders
+function loadOrders() {
+  const container = document.getElementById("ordersList");
+  if (!container) return;
+
+  if (orders.length === 0) {
+    container.innerHTML = "<p>No orders received yet.</p>";
+    return;
+  }
+
+  container.innerHTML = orders.map((order, index) => `
+    <div style="border:1px solid gold; padding:10px; border-radius:8px; margin-bottom:10px;">
+      <strong>Customer:</strong> ${order.name}<br/>
+      <strong>Location:</strong> ${order.location}<br/>
+      <strong>Contact:</strong> ${order.contact}<br/>
+      <strong>Payment:</strong> ${order.payment}<br/>
+      <strong>Delivery Fee:</strong> ₵${order.delivery}<br/>
+      <strong>Total:</strong> ₵${order.total}<br/>
+      <strong>Items:</strong>
+      <ul style="margin: 5px 0 10px;">
+        ${order.items.map(item => `<li>${item.name} x ${item.quantity} = ₵${item.price}</li>`).join("")}
+      </ul>
+      <button onclick="markProcessed(${index})">✅ Mark as Processed</button>
+      <button onclick="deleteOrder(${index})" style="background:crimson;color:white;margin-left:10px;">🗑️ Delete</button>
+    </div>
+  `).join("");
+}
+
+// Move to processed
+function markProcessed(index) {
+  const order = orders.splice(index, 1)[0];
+  const processed = JSON.parse(localStorage.getItem("processedOrders") || "[]");
+  processed.push(order);
+  localStorage.setItem("processedOrders", JSON.stringify(processed));
+  saveOrders();
+}
+
+// Delete with confirmation
+function deleteOrder(index) {
+  if (confirm("Delete this order?")) {
+    orders.splice(index, 1);
+    saveOrders();
+  }
+}
+
+// Load orders initially
+loadOrders();
 
 </body>
 </html>
