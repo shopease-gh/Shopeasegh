@@ -127,10 +127,15 @@
       <p>Admin can upload product images, names, prices, and descriptions here.</p>
     </div>
 
-    <div id="categories" class="tab-content section-box">
-      <h3>Manage Categories</h3>
-      <p>Add or remove product categories like Clothes, Electronics, etc.</p>
-    </div>
+   <h3>Manage Categories</h3>
+
+<form id="categoryForm" onsubmit="addCategory(event)">
+  <input type="text" id="newCategory" placeholder="New Category" required style="padding:8px; width:250px; margin:5px;" />
+  <button type="submit" style="padding:8px; background:gold; color:black;">➕ Add Category</button>
+</form>
+
+<div id="categoryList" style="margin-top:20px;"></div>
+
 
     <div id="inbox" class="tab-content section-box">
       <h3>Inbox</h3>
@@ -153,6 +158,8 @@
   if (tabId === 'orders-processed') loadProcessedOrders();
   if (tabId === 'promotions') loadPromotions();
   if (tabId === 'products') loadProducts();
+  if (tabId === 'categories') loadCategories();
+
 
 }
 
@@ -338,6 +345,52 @@ function loadProducts() {
         orders.splice(index, 1);
         saveOrders();
       }
+      let categories = JSON.parse(localStorage.getItem("categories") || `["Clothes", "Electronics", "Hair Products", "Facial Stuff", "Hair Accessories", "Accessories"]`);
+
+function saveCategories() {
+  localStorage.setItem("categories", JSON.stringify(categories));
+  loadCategories();
+}
+
+function addCategory(e) {
+  e.preventDefault();
+  const input = document.getElementById("newCategory");
+  const newCat = input.value.trim();
+
+  if (!newCat || categories.includes(newCat)) {
+    alert("Invalid or duplicate category.");
+    return;
+  }
+
+  categories.push(newCat);
+  input.value = "";
+  saveCategories();
+}
+
+function deleteCategory(index) {
+  if (confirm("Delete this category?")) {
+    categories.splice(index, 1);
+    saveCategories();
+  }
+}
+
+function loadCategories() {
+  const container = document.getElementById("categoryList");
+  if (!container) return;
+
+  if (categories.length === 0) {
+    container.innerHTML = "<p>No categories yet.</p>";
+    return;
+  }
+
+  container.innerHTML = categories.map((cat, index) => `
+    <div style="padding:10px; border:1px solid gold; border-radius:8px; margin-bottom:10px;">
+      <strong>${cat}</strong>
+      <button onclick="deleteCategory(${index})" style="float:right; background:crimson; color:white;">🗑️ Delete</button>
+    </div>
+  `).join("");
+}
+
     }
 
     loadOrders();
