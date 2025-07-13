@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Admin Dashboard | ShopEase</title>
+  <style>
+    body {
+      background: black;
+      color: gold;
+      font-family: 'Segoe UI', sans-serif;
+      margin: 0;
+    }
+
+    header {
+      background: #111;
+      padding: 15px 20px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      border-bottom: 1px solid gold;
+    }
+
+    header h1 {
+      margin: 0;
+      font-size: 20px;
+    }
+
+    .logout-btn {
+      background: crimson;
+      color: white;
+      border: none;
+      padding: 8px 14px;
+      border-radius: 8px;
+      cursor: pointer;
+    }
+
+    .dashboard {
+      padding: 20px;
+    }
+
+    .tabs {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-bottom: 20px;
+    }
+
+    .tabs button {
+      background: gold;
+      color: black;
+      padding: 10px 16px;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+    }
+
+    .tab-content {
+      display: none;
+    }
+
+    .tab-content.active {
+      display: block;
+    }
+
+    .section-box {
+      background: #1a1a1a;
+      padding: 15px;
+      border-radius: 8px;
+      margin-bottom: 20px;
+    }
+  </style>
+</head>
+<body>
+
+  <header>
+    <h1>ShopEase Admin Dashboard</h1>
+    <button class="logout-btn" onclick="logout()">Logout</button>
+  </header>
+
+  <div class="dashboard">
+    <div class="tabs">
+      <button onclick="showTab('orders-received')">📥 Orders Received</button>
+      <button onclick="showTab('orders-processed')">✅ Orders Processed</button>
+      <button onclick="showTab('promotions')">🏷️ Promotion Status</button>
+      <button onclick="showTab('products')">📦 Add/Remove Products</button>
+      <button onclick="showTab('categories')">🗂️ Manage Categories</button>
+      <button onclick="showTab('inbox')">📬 Inbox</button>
+    </div>
+
+    <div id="orders-received" class="tab-content active section-box">
+      <h3>Orders Received</h3>
+      <p>This is where admin will see new orders submitted by users.</p>
+    </div>
+
+    <div id="orders-processed" class="tab-content section-box">
+      <h3>Orders Processed</h3>
+      <p>Admin can move fulfilled orders here for record-keeping.</p>
+    </div>
+
+    <div id="promotions" class="tab-content section-box">
+      <h3>Promotion Status</h3>
+      <p>Manage discounted products and view live promos.</p>
+    </div>
+
+    <div id="products" class="tab-content section-box">
+      <h3>Add/Remove Products</h3>
+      <p>Admin can upload product images, names, prices, and descriptions here.</p>
+    </div>
+
+    <div id="categories" class="tab-content section-box">
+      <h3>Manage Categories</h3>
+      <p>Add or remove product categories like Clothes, Electronics, etc.</p>
+    </div>
+
+    <div id="inbox" class="tab-content section-box">
+      <h3>Inbox</h3>
+      <p>Read and respond to messages from customers.</p>
+    </div>
+  </div>
+
+  <script>
+    // Check if admin is logged in
+    if (localStorage.getItem('adminLoggedIn') !== 'true') {
+      window.location.href = 'admin-login.html';
+    }
+
+    function showTab(tabId) {
+      document.querySelectorAll('.tab-content').forEach(tab => {
+        tab.classList.remove('active');
+      });
+      document.getElementById(tabId).classList.add('active');
+    }
+
+    function logout() {
+      localStorage.removeItem('adminLoggedIn');
+      localStorage.removeItem('entryPassed');
+      window.location.href = 'entry.html';
+    }
+  </script>
+
+</body>
+</html>
