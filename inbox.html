@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Inbox | ShopEase</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+
+  <!-- Sidebar -->
+  <div class="sidebar" id="sidebar">
+    <div class="sidebar-header">
+      <img src="logo.png" alt="ShopEase Logo" class="logo" />
+      <h2>ShopEase</h2>
+    </div>
+    <ul class="sidebar-links">
+      <li><a href="profile.html">👤 Profile</a></li>
+      <li><a href="index.html">🏠 Home</a></li>
+      <li><a href="login.html">🔐 Login</a></li>
+      <li><a href="inbox.html" class="active">📬 Inbox</a></li>
+      <li><a href="wishlist.html">💖 Wishlist</a></li>
+      <li><a href="cart.html">🛒 Cart</a></li>
+    </ul>
+  </div>
+  <div class="sidebar-backdrop" onclick="toggleSidebar()"></div>
+
+  <!-- Topbar -->
+  <div class="topbar">
+    <button class="menu-btn" onclick="toggleSidebar()">☰</button>
+    <div class="top-icons">
+      <a href="cart.html">🛒</a>
+      <a href="wishlist.html">💖</a>
+      <a href="profile.html">👤</a>
+    </div>
+  </div>
+
+  <!-- Hero -->
+  <section class="hero">
+    <h2>📬 Inbox</h2>
+    <p>View admin replies or send us a message below.</p>
+  </section>
+
+  <!-- Inbox Message Area -->
+  <section class="cart-container">
+    <div id="inboxMessages" style="margin-bottom: 20px;"></div>
+
+    <form id="inboxForm" style="background: #1a1a1a; padding: 20px; border-radius: 8px;">
+      <label for="message">Your Message:</label><br/>
+      <textarea id="message" rows="5" required style="width: 100%; padding: 10px; border-radius: 6px; border: none; margin-top: 8px;"></textarea><br/>
+      <button type="submit" style="margin-top: 10px; background: gold; color: black; padding: 10px 16px; border: none; border-radius: 6px; cursor: pointer;">Send</button>
+    </form>
+  </section>
+
+  <footer class="footer">
+    <p>&copy; 2025 ShopEase. Beauty. Tech. You.</p>
+  </footer>
+
+  <script>
+    function toggleSidebar() {
+      document.getElementById('sidebar').classList.toggle('show');
+      document.querySelector('.sidebar-backdrop').classList.toggle('show');
+    }
+
+    // Load inbox messages from localStorage
+    const inboxKey = 'customerInbox';
+    function loadMessages() {
+      const messages = JSON.parse(localStorage.getItem(inboxKey) || '[]');
+      const container = document.getElementById('inboxMessages');
+      if (messages.length === 0) {
+        container.innerHTML = "<p>No messages yet.</p>";
+        return;
+      }
+
+      container.innerHTML = messages.map(msg => `
+        <div style="background:#333; padding:10px; border-radius:8px; margin-bottom:10px;">
+          <strong>You:</strong><br/>${msg.text}<br/>
+          <small style="color:gray;">${new Date(msg.time).toLocaleString()}</small>
+        </div>
+      `).join("");
+    }
+
+    // Handle sending messages
+    document.getElementById('inboxForm').addEventListener('submit', function(e) {
+      e.preventDefault();
+      const text = document.getElementById('message').value.trim();
+      if (!text) return;
+
+      const messages = JSON.parse(localStorage.getItem(inboxKey) || '[]');
+      messages.push({ text, time: Date.now() });
+      localStorage.setItem(inboxKey, JSON.stringify(messages));
+      document.getElementById('message').value = '';
+      loadMessages();
+    });
+
+    loadMessages();
+  </script>
+
+</body>
+</html>
