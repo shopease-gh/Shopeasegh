@@ -1,102 +1,457 @@
-<!-- Updated Add/Remove Products Tab with File Upload -->
-<div id="products" class="tab-content section-box">
-  <h3>Add/Remove Products</h3>
-  <form id="addProductForm">
-    <input type="text" id="productName" placeholder="Product Name" required><br>
-    <input type="number" id="productPrice" placeholder="Price (₵)" required><br>
-    <select id="productCategory" required></select><br>
-    <textarea id="productDescription" placeholder="Description" required></textarea><br>
-    <input type="file" id="productImage" accept="image/png, image/jpeg" required><br>
-    <button type="submit">Add Product</button>
-  </form>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Admin Dashboard | ShopEase</title>
+  <style>
+    body {
+      background: black;
+      color: gold;
+      font-family: 'Segoe UI', sans-serif;
+      margin: 0;
+    }
 
-  <div id="productList" style="margin-top:20px;"></div>
+    header {
+      background: #111;
+      padding: 15px 20px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      border-bottom: 1px solid gold;
+    }
+
+    header h1 {
+      margin: 0;
+      font-size: 20px;
+    }
+
+    .logout-btn {
+      background: crimson;
+      color: white;
+      border: none;
+      padding: 8px 14px;
+      border-radius: 8px;
+      cursor: pointer;
+    }
+
+    .dashboard {
+      padding: 20px;
+    }
+
+    .tabs {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-bottom: 20px;
+    }
+
+    .tabs button {
+      background: gold;
+      color: black;
+      padding: 10px 16px;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+    }
+
+    .tab-content {
+      display: none;
+    }
+
+    .tab-content.active {
+      display: block;
+    }
+
+    .section-box {
+      background: #1a1a1a;
+      padding: 15px;
+      border-radius: 8px;
+      margin-bottom: 20px;
+    }
+  </style>
+</head>
+<body>
+
+  <header>
+    <h1>ShopEase Admin Dashboard</h1>
+    <button class="logout-btn" onclick="logout()">Logout</button>
+  </header>
+
+  <div class="dashboard">
+    <div class="tabs">
+      <button onclick="showTab('orders-received')">📥 Orders Received</button>
+      <button onclick="showTab('orders-processed')">✅ Orders Processed</button>
+      <button onclick="showTab('promotions')">🏷️ Promotion Status</button>
+      <button onclick="showTab('products')">📦 Add/Remove Products</button>
+      <button onclick="showTab('categories')">🗂️ Manage Categories</button>
+      <button onclick="showTab('inbox')">📬 Inbox</button>
+    </div>
+
+    <div id="orders-received" class="tab-content active section-box">
+      <h3>Orders Received</h3>
+      <div id="ordersList"></div>
+    </div>
+
+    <div id="orders-processed" class="tab-content section-box">
+      <h3>Orders Processed</h3>
+    <div id="processedList"></div>
+
+    </div>
+
+    <h3>Promotion Status</h3>
+
+<div style="margin-bottom: 15px;">
+  <input type="text" id="promoName" placeholder="Product Name" style="padding: 8px; width: 200px; margin-right: 10px;" />
+  <input type="number" id="promoDiscount" placeholder="Discount %" style="padding: 8px; width: 120px; margin-right: 10px;" />
+  <button onclick="addPromotion()">➕ Add Promotion</button>
 </div>
 
-<script>
-  let products = JSON.parse(localStorage.getItem("products") || "[]");
+<div id="promoList"></div>
 
-  document.getElementById("addProductForm").addEventListener("submit", function(e) {
-    e.preventDefault();
-    const name = document.getElementById("productName").value;
-    const price = parseFloat(document.getElementById("productPrice").value);
-    const category = document.getElementById("productCategory").value;
-    const description = document.getElementById("productDescription").value;
-    const fileInput = document.getElementById("productImage");
-    const file = fileInput.files[0];
 
-    if (!file || !file.type.startsWith("image/")) {
-      alert("Please upload a valid image file.");
-      return;
-    }
+    <h3>Add/Remove Products</h3>
 
-    const reader = new FileReader();
-    reader.onload = function(event) {
-      const imageUrl = event.target.result;
-      const product = { name, price, category, description, image: imageUrl };
-      products.push(product);
-      localStorage.setItem("products", JSON.stringify(products));
-      renderProducts();
-      e.target.reset();
-    };
-    reader.readAsDataURL(file);
-  });
+<form id="productForm" onsubmit="addProduct(event)">
+  <input type="text" id="pName" placeholder="Product Name" required style="padding:8px; width:200px; margin:5px;" />
+  <input type="number" id="pPrice" placeholder="Price (₵)" required style="padding:8px; width:150px; margin:5px;" />
+  <input type="text" id="pCategory" placeholder="Category" required style="padding:8px; width:150px; margin:5px;" />
+  <input type="text" id="pImage" placeholder="Image URL" required style="padding:8px; width:250px; margin:5px;" />
+  <input type="text" id="pDesc" placeholder="Short Description" required style="padding:8px; width:250px; margin:5px;" />
+  <button type="submit" style="padding:8px; background:gold; color:black;">➕ Add Product</button>
+</form>
 
-  function renderProducts() {
-    const container = document.getElementById("productList");
-    container.innerHTML = products.map((p, i) => `
-      <div style="border:1px solid gold; margin-bottom:10px; padding:10px; border-radius:8px;">
-        <img src="${p.image}" style="width:100px;height:auto;border-radius:6px;" alt="Product Image"/><br>
-        <strong>${p.name}</strong><br>₵${p.price}<br>${p.category}<br>${p.description}<br>
-        <button onclick="removeProduct(${i})" style="margin-top:10px;background:crimson;color:white;">🗑️ Remove</button>
-      </div>
-    `).join("");
-  }
+<div id="productList" style="margin-top:20px;"></div>
 
-  function removeProduct(index) {
-    if (confirm("Remove this product?")) {
-      products.splice(index, 1);
-      localStorage.setItem("products", JSON.stringify(products));
-      renderProducts();
-    }
-  }
+      <h3>Add/Remove Products</h3>
+      <p>Admin can upload product images, names, prices, and descriptions here.</p>
+    </div>
 
-  renderProducts();
-</script>
+   <h3>Manage Categories</h3>
 
-<!-- Inbox Tab Fix -->
-<div id="inbox" class="tab-content section-box">
+<form id="categoryForm" onsubmit="addCategory(event)">
+  <input type="text" id="newCategory" placeholder="New Category" required style="padding:8px; width:250px; margin:5px;" />
+  <button type="submit" style="padding:8px; background:gold; color:black;">➕ Add Category</button>
+</form>
+
+<div id="categoryList" style="margin-top:20px;"></div>
+
+
+   <div id="inbox" class="tab-content section-box">
   <h3>Inbox</h3>
-  <div id="inboxMessages"></div>
+  <div id="messageList"></div>
 </div>
 
-<script>
-  const messages = JSON.parse(localStorage.getItem("inboxMessages") || "[]");
+  </div>
 
-  function renderInbox() {
-    const inbox = document.getElementById("inboxMessages");
-    if (!inbox) return;
-    if (messages.length === 0) {
-      inbox.innerHTML = "<p>No messages yet.</p>";
-      return;
+  <script>
+    // Check if admin is logged in
+    if (localStorage.getItem('adminLoggedIn') !== 'true') {
+      window.location.href = 'admin-login.html';
     }
-    inbox.innerHTML = messages.map((msg, idx) => `
-      <div style="border:1px solid gold;padding:10px;border-radius:8px;margin-bottom:10px;">
-        <strong>From:</strong> ${msg.name}<br/>
-        <strong>Email:</strong> ${msg.email}<br/>
-        <strong>Message:</strong> ${msg.message}<br/>
-        <textarea id="reply_${idx}" placeholder="Write reply..." style="width:100%;margin-top:5px;"></textarea><br>
-        <button onclick="replyToMessage(${idx})">Send Reply</button>
+
+function showTab(tabId) {
+  document.querySelectorAll('.tab-content').forEach(tab => {
+    tab.classList.remove('active');
+  });
+  document.getElementById(tabId).classList.add('active');
+
+  if (tabId === 'orders-received') loadOrders();
+  if (tabId === 'products') loadProducts();
+  if (tabId === 'categories') loadCategories();
+  if (tabId === 'inbox') loadInbox();
+}
+
+
+}
+
+}
+
+
+    function logout() {
+      localStorage.removeItem('adminLoggedIn');
+      localStorage.removeItem('entryPassed');
+      window.location.href = 'entry.html';
+    }
+
+    // Orders logic
+    let orders = JSON.parse(localStorage.getItem("orders") || "[]");
+
+    function saveOrders() {
+      localStorage.setItem("orders", JSON.stringify(orders));
+      loadOrders();
+    }
+
+    function loadOrders() {
+      const container = document.getElementById("ordersList");
+      if (!container) return;
+
+      if (orders.length === 0) {
+        container.innerHTML = "<p>No orders received yet.</p>";
+        return;
+      }
+      function loadProcessedOrders() {
+  const container = document.getElementById("processedList");
+  if (!container) return;
+
+  const processed = JSON.parse(localStorage.getItem("processedOrders") || "[]");
+
+  if (processed.length === 0) {
+    container.innerHTML = "<p>No processed orders yet.</p>";
+    return;
+  }
+        let promotions = JSON.parse(localStorage.getItem("promotions") || "[]");
+
+function savePromotions() {
+  localStorage.setItem("promotions", JSON.stringify(promotions));
+  loadPromotions();
+}
+
+function addPromotion() {
+  const name = document.getElementById("promoName").value.trim();
+  const discount = parseInt(document.getElementById("promoDiscount").value);
+
+  if (!name || isNaN(discount)) {
+    alert("Enter product name and discount percentage.");
+    return;
+  }
+
+  promotions.push({ name, discount });
+  document.getElementById("promoName").value = "";
+  document.getElementById("promoDiscount").value = "";
+  savePromotions();
+}
+
+function removePromotion(index) {
+  if (confirm("Remove this promotion?")) {
+    promotions.splice(index, 1);
+    savePromotions();
+  }
+}
+
+function loadPromotions() {
+  const container = document.getElementById("promoList");
+  if (!container) return;
+
+  if (promotions.length === 0) {
+    container.innerHTML = "<p>No promotions yet.</p>";
+    return;
+  }
+let products = JSON.parse(localStorage.getItem("products") || "[]");
+
+function saveProducts() {
+  localStorage.setItem("products", JSON.stringify(products));
+  loadProducts();
+}
+
+function addProduct(e) {
+  e.preventDefault();
+  const name = document.getElementById("pName").value.trim();
+  const price = parseFloat(document.getElementById("pPrice").value);
+  const category = document.getElementById("pCategory").value.trim();
+  const image = document.getElementById("pImage").value.trim();
+  const desc = document.getElementById("pDesc").value.trim();
+
+  if (!name || !price || !category || !image || !desc) {
+    alert("Fill all fields correctly.");
+    return;
+  }
+
+  products.push({ name, price, category, image, desc });
+  document.getElementById("productForm").reset();
+  saveProducts();
+}
+
+function deleteProduct(index) {
+  if (confirm("Delete this product?")) {
+    products.splice(index, 1);
+    saveProducts();
+  }
+}
+
+function loadProducts() {
+  const container = document.getElementById("productList");
+  if (!container) return;
+
+  if (products.length === 0) {
+    container.innerHTML = "<p>No products added yet.</p>";
+    return;
+  }
+
+  container.innerHTML = products.map((prod, index) => `
+    <div style="border:1px solid gold; padding:10px; border-radius:8px; margin-bottom:15px;">
+      <img src="${prod.image}" alt="${prod.name}" style="width:100px; height:100px; object-fit:cover; border-radius:6px;" />
+      <h4>${prod.name}</h4>
+      <p><strong>₵${prod.price}</strong> | ${prod.category}</p>
+      <p>${prod.desc}</p>
+      <button onclick="deleteProduct(${index})" style="background:crimson; color:white;">🗑️ Remove</button>
+    </div>
+  `).join("");
+}
+
+  container.innerHTML = promotions.map((promo, index) => `
+    <div style="border:1px solid gold; padding:10px; border-radius:8px; margin-bottom:10px;">
+      <strong>Product:</strong> ${promo.name}<br/>
+      <strong>Discount:</strong> ${promo.discount}%<br/>
+      <button onclick="removePromotion(${index})" style="background:crimson; color:white; margin-top:10px;">🗑️ Remove</button>
+    </div>
+  `).join("");
+}
+
+
+  container.innerHTML = processed.map((order, index) => `
+    <div style="border:1px solid gold; padding:10px; border-radius:8px; margin-bottom:10px;">
+      <strong>Customer:</strong> ${order.name}<br/>
+      <strong>Location:</strong> ${order.location}<br/>
+      <strong>Contact:</strong> ${order.contact}<br/>
+      <strong>Payment:</strong> ${order.payment}<br/>
+      <strong>Delivery Fee:</strong> ₵${order.delivery}<br/>
+      <strong>Total:</strong> ₵${order.total}<br/>
+      <strong>Items:</strong>
+      <ul style="margin: 5px 0 10px;">
+        ${order.items.map(item => `<li>${item.name} x ${item.quantity} = ₵${item.price}</li>`).join("")}
+      </ul>
+    </div>
+  `).join("");
+}
+
+
+      container.innerHTML = orders.map((order, index) => `
+        <div style="border:1px solid gold; padding:10px; border-radius:8px; margin-bottom:10px;">
+          <strong>Customer:</strong> ${order.name}<br/>
+          <strong>Location:</strong> ${order.location}<br/>
+          <strong>Contact:</strong> ${order.contact}<br/>
+          <strong>Payment:</strong> ${order.payment}<br/>
+          <strong>Delivery Fee:</strong> ₵${order.delivery}<br/>
+          <strong>Total:</strong> ₵${order.total}<br/>
+          <strong>Items:</strong>
+          <ul style="margin: 5px 0 10px;">
+            ${order.items.map(item => `<li>${item.name} x ${item.quantity} = ₵${item.price}</li>`).join("")}
+          </ul>
+          <button onclick="markProcessed(${index})">✅ Mark as Processed</button>
+          <button onclick="deleteOrder(${index})" style="background:crimson;color:white;margin-left:10px;">🗑️ Delete</button>
+        </div>
+      `).join("");
+    }
+
+    function markProcessed(index) {
+      const order = orders.splice(index, 1)[0];
+      const processed = JSON.parse(localStorage.getItem("processedOrders") || "[]");
+      processed.push(order);
+      localStorage.setItem("processedOrders", JSON.stringify(processed));
+      saveOrders();
+    }
+
+    function deleteOrder(index) {
+      if (confirm("Delete this order?")) {
+        orders.splice(index, 1);
+        saveOrders();
+      }
+      let categories = JSON.parse(localStorage.getItem("categories") || `["Clothes", "Electronics", "Hair Products", "Facial Stuff", "Hair Accessories", "Accessories"]`);
+
+function saveCategories() {
+  localStorage.setItem("categories", JSON.stringify(categories));
+  loadCategories();
+}
+
+function addCategory(e) {
+  e.preventDefault();
+  const input = document.getElementById("newCategory");
+  const newCat = input.value.trim();
+
+  if (!newCat || categories.includes(newCat)) {
+    alert("Invalid or duplicate category.");
+    return;
+  }
+
+  categories.push(newCat);
+  input.value = "";
+  saveCategories();
+}
+
+function deleteCategory(index) {
+  if (confirm("Delete this category?")) {
+    categories.splice(index, 1);
+    saveCategories();
+  }
+}
+
+function loadCategories() {
+  const container = document.getElementById("categoryList");
+  if (!container) return;
+
+  if (categories.length === 0) {
+    container.innerHTML = "<p>No categories yet.</p>";
+    return;
+  }
+
+  container.innerHTML = categories.map((cat, index) => `
+    <div style="padding:10px; border:1px solid gold; border-radius:8px; margin-bottom:10px;">
+      <strong>${cat}</strong>
+      <button onclick="deleteCategory(${index})" style="float:right; background:crimson; color:white;">🗑️ Delete</button>
+    </div>
+  `).join("");
+}
+      let inboxMessages = JSON.parse(localStorage.getItem("inboxMessages") || "[]");
+
+function saveInbox() {
+  localStorage.setItem("inboxMessages", JSON.stringify(inboxMessages));
+  loadInbox();
+}
+
+function sendReply(index) {
+  const replyInput = document.getElementById(`reply-${index}`);
+  const replyText = replyInput.value.trim();
+
+  if (!replyText) {
+    alert("Reply cannot be empty.");
+    return;
+  }
+
+  inboxMessages[index].reply = replyText;
+  saveInbox();
+}
+
+function deleteMessage(index) {
+  if (confirm("Delete this message?")) {
+    inboxMessages.splice(index, 1);
+    saveInbox();
+  }
+}
+
+function loadInbox() {
+  const container = document.getElementById("messageList");
+  if (!container) return;
+
+  if (inboxMessages.length === 0) {
+    container.innerHTML = "<p>No messages yet.</p>";
+    return;
+  }
+
+  container.innerHTML = inboxMessages.map((msg, index) => `
+    <div style="border:1px solid gold; border-radius:8px; padding:10px; margin-bottom:15px;">
+      <strong>Name:</strong> ${msg.name}<br/>
+      <strong>Email:</strong> ${msg.email}<br/>
+      <strong>Message:</strong><br/>
+      <p style="margin: 8px 0; color: #ccc;">${msg.message}</p>
+
+      <div>
+        <label for="reply-${index}"><strong>Reply:</strong></label><br/>
+        <textarea id="reply-${index}" rows="3" style="width:100%; margin-top:5px;" placeholder="Type your reply here...">${msg.reply || ""}</textarea>
+        <div style="margin-top:8px;">
+          <button onclick="sendReply(${index})" style="padding:6px 12px; background:gold; color:black;">📨 Send Reply</button>
+          <button onclick="deleteMessage(${index})" style="padding:6px 12px; background:crimson; color:white; margin-left:10px;">🗑️ Delete</button>
+        </div>
       </div>
-    `).join("");
-  }
+    </div>
+  `).join("");
+}
 
-  function replyToMessage(index) {
-    const reply = document.getElementById(`reply_${index}`).value;
-    if (reply.trim() === "") return alert("Reply can't be empty.");
-    alert("Reply sent to: " + messages[index].email + "\nMessage: " + reply);
-    document.getElementById(`reply_${index}`).value = "";
-  }
 
-  renderInbox();
-</script>
+    }
+
+    loadOrders();
+  </script>
+
+</body>
+</html>
