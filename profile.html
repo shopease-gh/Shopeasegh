@@ -3,62 +3,96 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>My Profile | ShopEase</title>
-  <link rel="stylesheet" href="style.css" />
+  <title>Your Profile | ShopEase</title>
+  <style>
+    body {
+      background: black;
+      color: gold;
+      font-family: 'Segoe UI', sans-serif;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      margin: 0;
+    }
+
+    .profile-container {
+      background: #1a1a1a;
+      padding: 30px;
+      border-radius: 10px;
+      width: 90%;
+      max-width: 400px;
+      box-shadow: 0 0 12px gold;
+    }
+
+    h2 {
+      text-align: center;
+      margin-bottom: 20px;
+    }
+
+    label {
+      display: block;
+      margin-top: 10px;
+      font-size: 14px;
+    }
+
+    input {
+      width: 100%;
+      padding: 10px;
+      margin-top: 5px;
+      border-radius: 5px;
+      border: none;
+    }
+
+    button {
+      margin-top: 20px;
+      background: gold;
+      color: black;
+      border: none;
+      padding: 12px;
+      border-radius: 6px;
+      font-weight: bold;
+      width: 100%;
+      cursor: pointer;
+    }
+  </style>
 </head>
 <body>
 
-  <!-- Sidebar -->
-  <div class="sidebar" id="sidebar">
-    <div class="sidebar-header">
-      <img src="logo.png" alt="ShopEase Logo" class="logo" />
-      <h2>ShopEase</h2>
-    </div>
-    <ul class="sidebar-links">
-      <li><a href="profile.html">👤 Profile</a></li>
-      <li><a href="index.html">🏠 Home</a></li>
-      <li><a href="login.html">🔐 Login</a></li>
-      <li><a href="inbox.html">📬 Inbox</a></li>
-      <li><a href="wishlist.html">💖 Wishlist</a></li>
-      <li><a href="cart.html">🛒 Cart</a></li>
-    </ul>
+  <div class="profile-container">
+    <h2>Your Profile</h2>
+    <label for="name">Name</label>
+    <input type="text" id="name" />
+
+    <label for="phone">Phone Number</label>
+    <input type="text" id="phone" />
+
+    <label for="email">Email Address</label>
+    <input type="email" id="email" disabled />
+
+    <button onclick="saveProfile()">Save Changes</button>
   </div>
-  <div class="sidebar-backdrop" onclick="toggleSidebar()"></div>
-
-  <!-- Topbar -->
-  <div class="topbar">
-    <button class="menu-btn" onclick="toggleSidebar()">☰</button>
-    <div class="top-icons">
-      <a href="cart.html">🛒</a>
-      <a href="wishlist.html">💖</a>
-      <a href="profile.html">👤</a>
-    </div>
-  </div>
-
-  <!-- Profile Info -->
-  <section class="hero">
-    <h2>👤 My Profile</h2>
-    <p>Welcome back to ShopEase! Manage your account details below.</p>
-  </section>
-
-  <section class="cart-container">
-    <div style="background: #1a1a1a; padding: 20px; border-radius: 8px;">
-      <h3>Account Information</h3>
-      <p><strong>Name:</strong> Jane Doe</p>
-      <p><strong>Email:</strong> janedoe@example.com</p>
-      <p><strong>Phone:</strong> 024XXXXXXX</p>
-      <button style="margin-top:10px; padding: 10px 16px; border: none; background: gold; color: black; border-radius: 6px; cursor: pointer;">Edit Profile</button>
-    </div>
-  </section>
-
-  <footer class="footer">
-    <p>&copy; 2025 ShopEase. Beauty. Tech. You.</p>
-  </footer>
 
   <script>
-    function toggleSidebar() {
-      document.getElementById('sidebar').classList.toggle('show');
-      document.querySelector('.sidebar-backdrop').classList.toggle('show');
+    const loggedIn = localStorage.getItem("shopeaseLoggedIn");
+    const user = JSON.parse(localStorage.getItem("shopeaseUser"));
+
+    if (loggedIn !== "true" || !user) {
+      window.location.href = "login.html";
+    }
+
+    document.getElementById("name").value = user.name;
+    document.getElementById("phone").value = user.phone;
+    document.getElementById("email").value = user.email;
+
+    function saveProfile() {
+      const updatedUser = {
+        ...user,
+        name: document.getElementById("name").value.trim(),
+        phone: document.getElementById("phone").value.trim(),
+      };
+      localStorage.setItem("shopeaseUser", JSON.stringify(updatedUser));
+      alert("Profile updated!");
     }
   </script>
 
