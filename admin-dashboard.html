@@ -154,6 +154,33 @@
         container.innerHTML = "<p>No orders received yet.</p>";
         return;
       }
+      function loadProcessedOrders() {
+  const container = document.getElementById("processedList");
+  if (!container) return;
+
+  const processed = JSON.parse(localStorage.getItem("processedOrders") || "[]");
+
+  if (processed.length === 0) {
+    container.innerHTML = "<p>No processed orders yet.</p>";
+    return;
+  }
+
+  container.innerHTML = processed.map((order, index) => `
+    <div style="border:1px solid gold; padding:10px; border-radius:8px; margin-bottom:10px;">
+      <strong>Customer:</strong> ${order.name}<br/>
+      <strong>Location:</strong> ${order.location}<br/>
+      <strong>Contact:</strong> ${order.contact}<br/>
+      <strong>Payment:</strong> ${order.payment}<br/>
+      <strong>Delivery Fee:</strong> ₵${order.delivery}<br/>
+      <strong>Total:</strong> ₵${order.total}<br/>
+      <strong>Items:</strong>
+      <ul style="margin: 5px 0 10px;">
+        ${order.items.map(item => `<li>${item.name} x ${item.quantity} = ₵${item.price}</li>`).join("")}
+      </ul>
+    </div>
+  `).join("");
+}
+
 
       container.innerHTML = orders.map((order, index) => `
         <div style="border:1px solid gold; padding:10px; border-radius:8px; margin-bottom:10px;">
