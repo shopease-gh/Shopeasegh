@@ -1,3 +1,10 @@
+// Redirect to login if not logged in
+const loggedInUser = JSON.parse(localStorage.getItem("loggedInUser"));
+if (!loggedInUser) {
+  alert("Please log in to access your cart.");
+  window.location.href = "login.html";
+}
+
 let cartItems = JSON.parse(localStorage.getItem("cart")) || [];
 const cartList = document.getElementById("cart-items");
 const subtotalEl = document.getElementById("subtotal");
