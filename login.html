@@ -91,6 +91,31 @@
       window.location.href = "profile.html";
     }
   </script>
+<script>
+  document.getElementById("loginForm").addEventListener("submit", function (e) {
+    e.preventDefault();
+
+    // Get form values
+    const email = document.getElementById("email").value.trim();
+    const password = document.getElementById("password").value.trim();
+
+    // Get saved user data from localStorage
+    const users = JSON.parse(localStorage.getItem("shopeaseUsers") || "[]");
+
+    // Check if user exists and password matches
+    const found = users.find(user => user.email === email && user.password === password);
+
+    if (found) {
+      localStorage.setItem("userLoggedIn", "true");
+      localStorage.setItem("currentUser", JSON.stringify(found));
+
+      // Redirect to cart or home page
+      window.location.href = "index.html"; // or cart.html if returning to checkout
+    } else {
+      alert("Incorrect email or password.");
+    }
+  });
+</script>
 
 </body>
 </html>
