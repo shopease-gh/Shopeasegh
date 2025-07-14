@@ -23,3 +23,142 @@ document.getElementById('profileForm').addEventListener('submit', function (e) {
   alert('Profile updated!');
   window.location.href = 'index.html'; // Redirect to homepage
 });
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Login | ShopEase</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <main class="login-container">
+    <h1>Login to ShopEase</h1>
+ <form id="loginForm">
+  <input type="email" id="loginEmail" placeholder="Email" required />
+  <input type="password" id="loginPassword" placeholder="Password" required />
+  <button type="submit">Login</button>
+</form>
+
+  </main>
+
+  <script src="login.js"></script>
+</body>
+</html>
+
+  <style>
+    body {
+      background: black;
+      color: gold;
+      font-family: 'Segoe UI', sans-serif;
+      margin: 0;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+    }
+
+    .login-container {
+      background: #1a1a1a;
+      padding: 30px;
+      border-radius: 10px;
+      width: 100%;
+      max-width: 400px;
+      box-shadow: 0 0 10px gold;
+    }
+
+    h2 {
+      text-align: center;
+      margin-bottom: 20px;
+    }
+
+    input {
+      width: 100%;
+      padding: 10px;
+      margin-bottom: 15px;
+      border: none;
+      border-radius: 5px;
+    }
+
+    button {
+      width: 100%;
+      background: gold;
+      color: black;
+      border: none;
+      padding: 12px;
+      border-radius: 6px;
+      cursor: pointer;
+      font-weight: bold;
+    }
+
+    .signup-link {
+      margin-top: 15px;
+      text-align: center;
+      font-size: 14px;
+    }
+
+    .signup-link a {
+      color: gold;
+      text-decoration: underline;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="login-container">
+    <h2>Login to ShopEase</h2>
+    <input type="email" id="email" placeholder="Email Address" required />
+    <input type="password" id="password" placeholder="Password" required />
+    <button onclick="login()">Login</button>
+
+    <div class="signup-link">
+      Don't have an account? <a href="signup.html">Sign Up</a>
+    </div>
+  </div>
+
+  <script>
+    function login() {
+      const email = document.getElementById("email").value.trim();
+      const password = document.getElementById("password").value;
+
+      const savedUser = JSON.parse(localStorage.getItem("shopeaseUser"));
+
+      if (!savedUser || savedUser.email !== email || savedUser.password !== password) {
+        alert("Invalid credentials. Try again.");
+        return;
+      }
+
+      localStorage.setItem("shopeaseLoggedIn", "true");
+      alert("Login successful!");
+      window.location.href = "profile.html";
+    }
+  </script>
+<script>
+  document.getElementById("loginForm").addEventListener("submit", function (e) {
+    e.preventDefault();
+
+    // Get form values
+    const email = document.getElementById("email").value.trim();
+    const password = document.getElementById("password").value.trim();
+
+    // Get saved user data from localStorage
+    const users = JSON.parse(localStorage.getItem("shopeaseUsers") || "[]");
+
+    // Check if user exists and password matches
+    const found = users.find(user => user.email === email && user.password === password);
+
+    if (found) {
+      localStorage.setItem("userLoggedIn", "true");
+      localStorage.setItem("currentUser", JSON.stringify(found));
+
+      // Redirect to cart or home page
+      window.location.href = "index.html"; // or cart.html if returning to checkout
+    } else {
+      alert("Incorrect email or password.");
+    }
+  });
+</script>
+<script src="login.js"></script>
+
+</body>
+</html>
