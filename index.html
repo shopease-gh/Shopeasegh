@@ -3,117 +3,106 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>ShopEase | Home</title>
+  <title>Login | ShopEase</title>
   <link rel="stylesheet" href="style.css" />
+  <style>
+    body {
+      background: black;
+      color: gold;
+      font-family: 'Segoe UI', sans-serif;
+      margin: 0;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+    }
+
+    .login-container {
+      background: #1a1a1a;
+      padding: 30px;
+      border-radius: 10px;
+      width: 100%;
+      max-width: 400px;
+      box-shadow: 0 0 10px gold;
+    }
+
+    h2 {
+      text-align: center;
+      margin-bottom: 20px;
+    }
+
+    input {
+      width: 100%;
+      padding: 10px;
+      margin-bottom: 15px;
+      border: none;
+      border-radius: 5px;
+    }
+
+    button {
+      width: 100%;
+      background: gold;
+      color: black;
+      border: none;
+      padding: 12px;
+      border-radius: 6px;
+      cursor: pointer;
+      font-weight: bold;
+    }
+
+    .signup-link {
+      margin-top: 15px;
+      text-align: center;
+      font-size: 14px;
+    }
+
+    .signup-link a {
+      color: gold;
+      text-decoration: underline;
+    }
+  </style>
 </head>
 <body>
 
-  <!-- Header -->
-  <header>
-    <div class="header-top">
-      <button id="menu-toggle">☰</button>
-      <h1>ShopEase</h1>
-      <button id="theme-toggle">🌓</button>
+  <div class="login-container">
+    <h2>Login to ShopEase</h2>
+    <form id="loginForm">
+      <input type="email" id="loginEmail" placeholder="Email Address" required />
+      <input type="password" id="loginPassword" placeholder="Password" required />
+      <button type="submit">Login</button>
+    </form>
+
+    <div class="signup-link">
+      Don't have an account? <a href="signup.html">Sign Up</a>
     </div>
-  </header>
+  </div>
 
-  <!-- Sidebar -->
-  <aside id="sidebar" class="sidebar">
-<ul class="sidebar-links">
-  <li><a href="profile.html">👤 Profile</a></li>
-  <li><a href="index.html">🏠 Home</a></li>
-  <li><a href="login.html">🔐 Login</a></li>
-  <li><a href="inbox.html">📬 Inbox</a></li>
-  <li><a href="wishlist.html">💛 Wishlist</a></li>
-  <li><a href="cart.html">🛒 Cart</a></li>
-</ul>
-
-   
-  </aside>
-
-  <!-- Main Content -->
-  <main class="main-content">
-    <!-- Hero Section -->
-    <section class="hero">
-      <h2>Beauty. Tech. You.</h2>
-      <p>Welcome to ShopEase — where quality meets affordability.</p>
-    </section>
-
-    <!-- Filters -->
-    <section class="filters">
-      <input type="text" id="search-input" placeholder="Search products..." />
-      <label for="priceRange">Max: ₵<span id="priceValue">1000</span></label>
-      <input type="range" id="priceRange" min="0" max="1000" value="1000" />
-    </section>
-
-    <!-- Products Section -->
-    <section class="products">
-      <h2>Featured Products</h2>
-      <div id="product-list" class="product-grid"></div>
-    </section>
-  </main>
-
-  <!-- Alert -->
-  <div id="alert" class="alert">Added to cart!</div>
-
-  <!-- Footer -->
-  <footer>
-    <p>&copy; 2025 ShopEase. Beauty. Tech. You.</p>
-  </footer>
-
-  <!-- Scripts -->
-  <script src="app.js" defer></script>
   <script>
-    document.addEventListener("DOMContentLoaded", () => {
-      const sidebar = document.getElementById("sidebar");
-      const toggleBtn = document.getElementById("menu-toggle");
+    document.getElementById("loginForm").addEventListener("submit", function (e) {
+      e.preventDefault();
 
-      if (sidebar && toggleBtn) {
-        // Toggle sidebar
-        toggleBtn.addEventListener("click", () => {
-          sidebar.classList.toggle("show");
-        });
+      const email = document.getElementById("loginEmail").value.trim();
+      const password = document.getElementById("loginPassword").value.trim();
 
-        // Close sidebar when clicking a link
-        document.querySelectorAll("#sidebar a").forEach(link => {
-          link.addEventListener("click", () => {
-            sidebar.classList.remove("show");
-          });
-        });
+      const users = JSON.parse(localStorage.getItem("shopeaseUsers") || "[]");
 
-        // Close sidebar when clicking outside
-        document.addEventListener("click", (event) => {
-          if (
-            sidebar.classList.contains("show") &&
-            !sidebar.contains(event.target) &&
-            event.target !== toggleBtn
-          ) {
-            sidebar.classList.remove("show");
-          }
-        });
+      const found = users.find(user => user.email === email && user.password === password);
+
+      if (found) {
+        localStorage.setItem("userLoggedIn", "true");
+        localStorage.setItem("currentUser", JSON.stringify(found));
+
+        // Check if user came from cart
+        if (localStorage.getItem("fromCart") === "true") {
+          localStorage.removeItem("fromCart");
+          window.location.href = "cart.html";
+        } else {
+          window.location.href = "index.html";
+        }
+      } else {
+        alert("Incorrect email or password.");
       }
     });
   </script>
-<script>
-  // Reveal Admin link with Shift + A
-  document.addEventListener('keydown', (e) => {
-    if (e.shiftKey && e.key.toLowerCase() === 'a') {
-      const adminLink = document.getElementById('admin-link');
-      if (adminLink) {
-        adminLink.style.display = 'block';
-        alert("🔐 Admin access link revealed.");
-      }
-    }
-  });
-</script>
-<script>
-  // Shortcut: Press Shift + A to open admin entry page
-  document.addEventListener('keydown', function(e) {
-    if (e.shiftKey && e.key.toLowerCase() === 'a') {
-      window.location.href = 'entry.html';
-    }
-  });
-</script>
-
 </body>
 </html>
