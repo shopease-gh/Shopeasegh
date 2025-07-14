@@ -162,3 +162,5 @@ document.getElementById('profileForm').addEventListener('submit', function (e) {
 
 </body>
 </html>
+alert('Profile updated!');
+window.location.href = 'index.html';
