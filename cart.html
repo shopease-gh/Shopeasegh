@@ -25,6 +25,21 @@
         <option value="Cash">Cash on Delivery</option>
         <option value="Mobile Money">Mobile Money</option>
       </select>
+<script>
+  document.addEventListener("DOMContentLoaded", () => {
+    const checkoutButton = document.getElementById("checkoutButton");
+
+    checkoutButton.addEventListener("click", (e) => {
+      const loggedIn = localStorage.getItem("userLoggedIn") === "true";
+
+      if (!loggedIn) {
+        alert("Please log in to checkout.");
+        window.location.href = "login.html";
+        e.preventDefault();
+      }
+    });
+  });
+</script>
 
       <button id="submit-order">Submit Order</button>
     </div>
