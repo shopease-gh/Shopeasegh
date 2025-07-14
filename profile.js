@@ -130,7 +130,8 @@ document.getElementById('profileForm').addEventListener('submit', function (e) {
 
       localStorage.setItem("shopeaseLoggedIn", "true");
       alert("Login successful!");
-      window.location.href = "profile.html";
+   window.location.href = "index.html";
+
     }
   </script>
 <script>
