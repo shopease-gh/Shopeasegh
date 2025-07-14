@@ -38,6 +38,10 @@
         window.location.href = "login.html";
         e.preventDefault();
       }
+      if (loggedInUser) {
+  document.getElementById("greeting").textContent = `Welcome, ${loggedInUser.name}`;
+}
+
     });
   });
 </script>
