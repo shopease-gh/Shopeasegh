@@ -18,6 +18,10 @@ document.addEventListener("DOMContentLoaded", () => {
     if (user) {
       localStorage.setItem("loggedInUser", JSON.stringify(user));
       alert("Login successful!");
+      const redirectTo = localStorage.getItem('redirectAfterLogin') || 'profile.html';
+localStorage.removeItem('redirectAfterLogin');
+window.location.href = redirectTo;
+
 
       window.location.href = "index.html"; // ✅ Redirect to homepage
     } else {
