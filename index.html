@@ -106,6 +106,14 @@
     }
   });
 </script>
+<script>
+  // Shortcut: Press Shift + A to open admin entry page
+  document.addEventListener('keydown', function(e) {
+    if (e.shiftKey && e.key.toLowerCase() === 'a') {
+      window.location.href = 'entry.html';
+    }
+  });
+</script>
 
 </body>
 </html>
